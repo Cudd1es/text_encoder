@@ -18,6 +18,8 @@ pip install -r requirements.txt
 
 ## Encoder
 
+Supports dense and sparse encoder to encoder input text into vectors.
+
 ---
 
 ### Usage
