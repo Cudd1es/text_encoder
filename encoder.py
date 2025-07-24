@@ -115,5 +115,3 @@ if __name__ == "__main__":
         print("Dense embedding (first 5 dims):", embeddings[0][:5])
     else:
         print(embeddings)
-        #print("Sparse embedding (top 5 tokens):", list(embeddings[0].items())[:5])
-
