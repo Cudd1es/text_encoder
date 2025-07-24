@@ -2,7 +2,6 @@ from sentence_transformers import SentenceTransformer
 from sentence_transformers.sparse_encoder import SparseEncoder
 import re
 import os
-import torch
 
 
 class TextEncoder:
