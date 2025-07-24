@@ -20,19 +20,19 @@ pip install -r requirements.txt
 
 Encode text from a file (one line = one text input)
 
-```python encoder.py -t requirements.txt```
+```python main.py -t requirements.txt```
 
 Encode text from CLI input
 
-```python encoder.py -t "This is an example sentence."```
+```python main.py -t "This is an example sentence."```
 
 Use sparse encoder instead of dense
 
-```python encoder.py -t "Search-optimized encoding example." -m sparse```
+```python main.py -t "Search-optimized encoding example." -m sparse```
 
 To view help:
 
-```python encoder.py --help```
+```python main.py --help```
 
 If --text is not provided, help will be printed automatically.
 
