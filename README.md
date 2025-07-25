@@ -16,23 +16,31 @@ pip install -r requirements.txt
 ```
 ---
 
+## Encoder
+
+Supports dense and sparse encoder to encoder input text into vectors.
+
+---
+
 ### Usage
+
+`main.py`: Encode individual texts using dense or sparse models.
 
 Encode text from a file (one line = one text input)
 
-```python encoder.py -t requirements.txt```
+```python main.py -t requirements.txt```
 
 Encode text from CLI input
 
-```python encoder.py -t "This is an example sentence."```
+```python main.py -t "This is an example sentence."```
 
 Use sparse encoder instead of dense
 
-```python encoder.py -t "Search-optimized encoding example." -m sparse```
+```python main.py -t "Search-optimized encoding example." -m sparse```
 
 To view help:
 
-```python encoder.py --help```
+```python main.py --help```
 
 If --text is not provided, help will be printed automatically.
 
@@ -70,6 +78,77 @@ Before encoding, input text is cleaned automatically:
 * Extra whitespace normalized
 
 ---
+
+
+## Hybrid Ranking (Dense + Sparse)
+
+Supports hybrid reranking using both dense and sparse encoders.
+
+---
+
+### Run hybrid search from command line
+
+`ranker_main.py`: Perform hybrid search and rerank documents using both encoders.
+
+
+```python ranker_main.py --query "your search query" --doc_path documents/document_example.txt```
+
+#### Optional arguments:
+
+
+* --top_n: Number of top results to return. Default: 5
+
+* --alpha: Weight for dense similarity in hybrid score. Range: 0.0 (only sparse) to 1.0 (only dense). Default: 0.5
+
+* --doc_path: Path to your document list file (one document per line). Default: documents/document_example.txt
+
+#### Example
+
+```python ranker_main.py --query "best vpn for gaming" --top_n 3 --alpha 0.7```
+
+This will:
+
+* Encode query using both dense and sparse encoders
+
+* Rerank the document list by a hybrid score: 0.7*dense_score + 0.3*sparse_score
+
+* Output top 3 most relevant results
+
+---
+
+### Output example
+
+```angular2html
+Top 3 Results for Query: "best vpn for gaming"
+
+1. [Score: 1.2345]
+    Dense: 0.8765, Sparse: 0.4789
+    → ProtonVPN offers high-speed servers ideal for gaming and streaming.
+
+2. [Score: 1.0154]
+    Dense: 0.7123, Sparse: 0.6063
+    → NordVPN is one of the most popular VPNs with low latency features.
+
+3. [Score: 0.9457]
+    Dense: 0.6870, Sparse: 0.5171
+    → Surfshark is affordable and offers good performance in Asia.
+
+```
+
+---
+
+### Example Documents File
+
+The --doc_path file should contain one document per line:
+
+```angular2html
+ProtonVPN offers high-speed servers ideal for gaming and streaming.
+NordVPN is one of the most popular VPNs with low latency features.
+Surfshark is affordable and offers good performance in Asia.
+...
+```
+
+
 ### License
 
 MIT License. Use at your own risk.

@@ -1,9 +1,8 @@
 from sentence_transformers import SentenceTransformer
 from sentence_transformers.sparse_encoder import SparseEncoder
 import re
-import argparse
 import os
-import sys
+
 
 class TextEncoder:
     def __init__(self, model_name="all-MiniLM-L6-v2", normalize=True):
@@ -86,30 +85,3 @@ def read_input(source):
         return lines
     else:
         return [source]
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--text", "-t", type=str, help="path to input text to be encoded")
-    parser.add_argument("--mode", "-m", type=str, choices=["dense", "sparse"], default="dense", help="Encoder type")
-    args = parser.parse_args()
-    if not args.text:
-        parser.print_help()
-        sys.exit(1)
-
-    texts = read_input(args.text)
-
-
-    # output test
-    if args.mode == "dense":
-        encoder = TextEncoder()
-    elif args.mode == "sparse":
-        encoder = TextSparseEncoder()
-    else:
-        raise ValueError("Unsupported mode.")
-
-    embeddings = encoder.encode(texts)
-
-    if args.mode == "dense":
-        print("Dense embedding (first 5 dims):", embeddings[0][:5])
-    else:
-        print(embeddings)
