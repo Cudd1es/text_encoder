@@ -22,51 +22,60 @@ Supports dense and sparse encoder to encoder input text into vectors.
 
 ---
 
-### Usage
+## Usage
 
-`main.py`: Encode individual texts using dense or sparse models.
+### Encode text from a file (one line = one input)
 
-Encode text from a file (one line = one text input)
+```
+python main.py -t README.md
+```
 
-```python main.py -t requirements.txt```
+### Encode text from a CLI string
 
-Encode text from CLI input
+```
+python main.py -t "This is an example sentence."
+```
 
-```python main.py -t "This is an example sentence."```
+### Use sparse encoder instead of dense
 
-Use sparse encoder instead of dense
+```
+python main.py -t "Search-optimized encoding example." -m sparse
+```
 
-```python main.py -t "Search-optimized encoding example." -m sparse```
+### Save encoded embeddings to a file
 
-To view help:
+```
+python main.py -t input.txt -o output_embeddings.txt
+```
 
-```python main.py --help```
-
-If --text is not provided, help will be printed automatically.
+- Output file is in plain text format (each row = one embedding).
+- Defaults to `embeddings_output` if `--output` is not specified.
 
 ---
 
-### Output Format
-Dense Mode (--mode dense, default)
 
-* Returns a NumPy array of shape (num_texts, embedding_dim)
-* Example:
+## Output Format
 
-```Dense embedding (first 5 dims): [0.021 0.183 0.274 0.095 0.008]```
+### Dense Mode (`--mode dense`, default)
 
-Sparse Mode (--mode sparse)
-
-* Returns a PyTorch sparse tensor (torch.sparse_coo_tensor)
-* Example:
-
+- Returns a NumPy array of shape `(num_texts, embedding_dim)`
+- Example:
 ```
-tensor(indices=tensor([[0, 0, 0, ..., 0, 0],
-                       [1012, 1024, 1055, ..., 2952, 3098]]),
-       values=tensor([0.3221, 0.0183, 0.4408, ..., 0.0312, 0.1129]),
+[0.021 0.183 0.274 0.095 0.008 ...]
+```
+
+### Sparse Mode (`--mode sparse`)
+
+- Returns a PyTorch sparse tensor (`torch.sparse_coo_tensor`)
+- Example:
+```
+tensor(indices=tensor([[0, 0, ..., 0],
+                       [1024, 1055, ..., 3098]]),
+       values=tensor([0.0183, 0.4408, ..., 0.1129]),
        size=(1, 30522), nnz=92, layout=torch.sparse_coo)
 ```
 
-Each token in the vocabulary is assigned a weight, but only non-zero values are stored.
+> Note: `np.savetxt()` does **not** support saving sparse tensors directly. You'll need to implement custom serialization for sparse output (e.g. convert to dictionary of token weights).
 
 ---
 
